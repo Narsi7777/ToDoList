@@ -1,21 +1,32 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development', // Set to 'production' for optimized build
-  entry: './src/index.jsx', // The entry point of your application
+  entry: './src/index.jsx',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public'), // Output directory
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // This rule applies to both JS and JSX files
-        exclude: /node_modules/, // Exclude files from the node_modules folder
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // Use Babel loader to transpile JSX
-        },
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
       },
-    ],
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
+  mode: 'development' // Or 'production' based on your needs
 };
